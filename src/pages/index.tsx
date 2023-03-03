@@ -2,7 +2,7 @@ import SideBar from '@/compomemts/Sidebar';
 import styles from './index.less';
 import MessageList from '@/compomemts/MessageList';
 import { useRequest } from 'ahooks';
-import { queryAnswer } from '@/services';
+import { queryAnswer, queryAnswerByOpenApi } from '@/services';
 import { useEffect, useRef, useState } from 'react';
 import iconSend from '@/assets/icons/icon-send.svg';
 import { useModel } from '@@/exports';
@@ -17,7 +17,7 @@ export default function HomePage() {
     data,
     run: query,
     loading,
-  } = useRequest((data: string) => queryAnswer({ data }), {
+  } = useRequest((data: any) => queryAnswerByOpenApi({ data }), {
     manual: true,
   });
 
@@ -33,9 +33,9 @@ export default function HomePage() {
 
   const aiMsg = (content: string) => {
     let fmtContent = content;
-    if (content.startsWith('\n\n')) {
+    /* if (content.startsWith('\n\n')) {
       fmtContent = content.substring(2, content.length);
-    }
+    }*/
     return {
       role: 'ai',
       content: fmtContent,
@@ -46,7 +46,7 @@ export default function HomePage() {
     if (humanMsg?.length > 0) {
       setHumanMsg('');
       setMsgList((prev) => [...prev, userMsg(humanMsg)]);
-      query(humanMsg);
+      query([...msgList, userMsg(humanMsg)]);
     }
   };
 
@@ -60,8 +60,8 @@ export default function HomePage() {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
-      setMsgList([...msgList, aiMsg(data?.data)]);
+      const msgs = data?.choices?.map((item: any) => item.message);
+      setMsgList([...msgList, ...(msgs || [])]);
     }
   }, [data]);
 

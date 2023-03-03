@@ -6,3 +6,21 @@ export async function queryAnswer(data: Record<string, any>) {
     data,
   });
 }
+
+export async function queryAnswerByOpenApi(data: any) {
+  const apikey = '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';
+  // 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
+  return request<any>('https://api.openai.com/v1/chat/completions', {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apikey}`,
+    },
+    method: 'POST',
+    data: JSON.stringify({
+      model: 'gpt-3.5-turbo',
+      messages: data?.data,
+      temperature: 0.6,
+      // stream: true,
+    }),
+  });
+}
