@@ -8,7 +8,7 @@ export async function queryAnswer(data: Record<string, any>) {
 }
 
 export async function queryAnswerByOpenApi(data: any) {
-  const apikey = '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';
+  const apikey = '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';
   // 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
   // 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
   return request<any>('https://api.openai.com/v1/chat/completions', {
