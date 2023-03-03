@@ -3,7 +3,7 @@ import icon from '@/assets/icons/icon-plus.svg';
 
 const SideBar = () => {
   return (
-    <nav className={styles.sidebar}>
+    <nav className={`${styles.sidebar} ${styles.hidden}`}>
       <button className={styles.btnNew}>
         <img className={styles.iconPlus} src={icon} alt="add" />
         <span>开始新对话</span>

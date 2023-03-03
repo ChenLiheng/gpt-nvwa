@@ -14,9 +14,8 @@ import MarkDown from 'react-markdown';
 import 'github-markdown-css';
 // @ts-ignore
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'; // 代码高亮
-//高亮的主题，还有很多别的主题，可以自行选择
 // @ts-ignore
-import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface MessageListProps {
   data?: { role: string; content: string }[];
@@ -44,7 +43,7 @@ const MessageItem = ({ data, loading }: any) => (
                 return !inline && match ? (
                   <SyntaxHighlighter
                     children={String(children).replace(/\n$/, '')}
-                    style={tomorrow}
+                    style={atomDark}
                     language={match[1]}
                     PreTag="div"
                     {...props}
