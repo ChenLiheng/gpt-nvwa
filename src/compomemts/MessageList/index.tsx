@@ -1,0 +1,99 @@
+/**
+ * @author: big.bro
+ * @date:  2023-03-02
+ * @time: 09:51
+ * @contact: chenliheng@youlai.cn
+ * @description: #
+ */
+import styles from './index.less';
+import aiLogo from '@/assets/icons/ai-logo.svg';
+import userLogo from '@/assets/icons/user-logo.svg';
+import { FC, useEffect, useRef } from 'react';
+import ShowText from '@/compomemts/ShowText';
+import MarkDown from 'react-markdown';
+import 'github-markdown-css';
+// @ts-ignore
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'; // 代码高亮
+//高亮的主题，还有很多别的主题，可以自行选择
+// @ts-ignore
+import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+interface MessageListProps {
+  data?: { role: string; content: string }[];
+  loading?: boolean;
+}
+
+const MessageItem = ({ data, loading }: any) => (
+  <div
+    className={styles.msgItem}
+    style={{ background: data?.role === 'ai' ? '#f7f7f7' : '#fff' }}
+  >
+    <div className={styles.msgBody}>
+      <img
+        className={styles.logo}
+        src={data?.role === 'user' ? userLogo : aiLogo}
+        alt={''}
+      />
+      <div className={styles.content}>
+        {!loading ? (
+          <MarkDown
+            className="markdown-body bg-transparent"
+            components={{
+              code({ node, inline, className, children, ...props }) {
+                const match = /language-(\w+)/.exec(className || '');
+                return !inline && match ? (
+                  <SyntaxHighlighter
+                    children={String(children).replace(/\n$/, '')}
+                    style={tomorrow}
+                    language={match[1]}
+                    PreTag="div"
+                    {...props}
+                  />
+                ) : (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
+                );
+              },
+            }}
+          >
+            {data?.content}
+          </MarkDown>
+        ) : (
+          <div className={styles.cursor}></div>
+        )}
+      </div>
+    </div>
+  </div>
+);
+
+const Loading = () => <MessageItem data={{ role: 'ai' }} loading />;
+
+const MessageList: FC<MessageListProps> = ({ data, loading = false }) => {
+  const listContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleScrollBottom = () => {
+    if (listContainerRef?.current) {
+      const { scrollHeight, clientHeight } = listContainerRef?.current;
+      listContainerRef.current.scrollTo({
+        top: scrollHeight - clientHeight,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  useEffect(() => {
+    handleScrollBottom();
+  }, [data]);
+
+  return (
+    <div className={styles.msgList} ref={listContainerRef}>
+      {data?.map((item, index) => (
+        <MessageItem key={`${item.role}_${index}`} data={item} />
+      ))}
+      {loading && <Loading />}
+    </div>
+  );
+};
+
+export default MessageList;

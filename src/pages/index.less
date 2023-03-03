@@ -1,0 +1,76 @@
+.home {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+}
+
+.main {
+  flex: 1;
+  position: relative;
+
+  .footer {
+    padding: 1rem;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    bottom: 0;
+    box-sizing: border-box;
+  }
+
+  .sendInput {
+    width: 100%;
+    max-width: 42rem;
+    flex: 1;
+    background: #fff;
+    padding: 0.75rem 1rem;
+    box-sizing: border-box;
+    box-shadow: 0 0 #0000 ,0 0 #0000, 0 0 10px rgba(0,0,0,.1);
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+
+    textarea {
+      height: 21px;
+      flex: 1;
+      max-height: 200px;
+      appearance: none;
+      background-color: transparent;
+      border-color: #8e8ea0;
+      border-radius: 0;
+      font-size: 1rem;
+      line-height: 1.5rem;
+      color: inherit;
+      font-family: inherit;
+      font-weight: inherit;
+      margin: 0;
+      border-width: 0;
+      overflow: auto;
+      resize: none;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .iconWrap {
+      padding: 5px;
+      border-radius: 5px;
+      display: flex;
+      width: 1rem;
+      height: 1rem;
+
+      &:hover {
+        background: #8e8ea0;
+      }
+
+      .iconSend {
+        display: flex;
+        box-sizing: border-box;
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+/**
+ * @author: big.bro
+ * @date:  2023-03-02
+ * @time: 09:57
+ * @contact: chenliheng@youlai.cn
+ * @description: #
+ */
+.msgList {
+  overflow: scroll;
+  height: 100%;
+  padding-bottom: 100px;
+  box-sizing: border-box;
+}
+
+.msgItem {
+  width: 100%;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  .msgBody {
+    flex: 1;
+    max-width: 42rem;
+    padding: 1.5rem 0;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+
+    .logo {
+      width: 30px;
+      height: 30px;
+      margin-right: 1rem;
+    }
+
+    .content {
+      min-height: 30px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      font-size: 1rem;
+      line-height: 30px;
+      flex: 1;
+    }
+
+    .cursor {
+      height: 20px;
+      width: 5px;
+      line-height: 30px;
+      background: #1b2d47;
+      animation-name: blinker;
+      animation-iteration-count: infinite;
+      animation-timing-function: cubic-bezier(1, 0, 0, 1);
+      animation-duration: 1s;
+    }
+  }
+}
+
+@keyframes typing{
+  from {
+    width: 0;
+  }
+}
+@-webkit-keyframes blinker {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes blinker {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
