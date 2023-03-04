@@ -21,7 +21,7 @@ export default function HomePage() {
     loading,
   } = useRequest(
     (data: any) =>
-      isOpenApi ? queryAnswerByOpenApi({ data }) : queryAnswer(data),
+      isOpenApi ? queryAnswerByOpenApi({ data }) : queryAnswer({ data }),
     {
       manual: true,
     },
@@ -76,7 +76,7 @@ export default function HomePage() {
         const msgs = data?.choices?.map((item: any) => item.message);
         setMsgList([...msgList, ...(msgs || [])]);
       } else {
-        setMsgList([...msgList, aiMsg(data)]);
+        setMsgList([...msgList, aiMsg(data?.data)]);
       }
     }
   }, [data]);

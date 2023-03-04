@@ -1,7 +1,7 @@
 import request from 'umi-request';
 
 export async function queryAnswer(data: Record<string, any>) {
-  return request<any>('/v1/chat', {
+  return request<any>('http://13.229.45.163:8100/v1/chat', {
     method: 'POST',
     data,
   });
