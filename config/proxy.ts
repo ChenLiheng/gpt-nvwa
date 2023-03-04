@@ -1,7 +1,7 @@
 export default {
   dev: {
-    '/chat': {
-      target: 'http://13.229.45.163:8080/v1/',
+    '/v1/chat': {
+      target: 'http://13.229.45.163:8100',
       changeOrigin: true,
       pathRewrite: { '^': '' },
       headers: {
@@ -10,8 +10,8 @@ export default {
     },
   },
   test: {
-    '/chat': {
-      target: 'http://13.229.45.163:8080/v1/',
+    '/v1/chat': {
+      target: 'http://13.229.45.163:8080',
       changeOrigin: true,
       pathRewrite: { '^': '' },
       headers: {

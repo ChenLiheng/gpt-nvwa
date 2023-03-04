@@ -1,5 +1,5 @@
 .home {
-  height: 100vh;
+  height: 100%;
   width: 100%;
   overflow: hidden;
   display: flex;
@@ -18,6 +18,8 @@
     flex-direction: column;
     align-items: center;
     bottom: 0;
+    left: 0;
+    right: 0;
     box-sizing: border-box;
   }
 
@@ -72,5 +74,16 @@
         box-sizing: border-box;
       }
     }
+  }
+}
+
+@media (max-width: 769px) {
+  :root {
+    --vh: 1vh;
+  }
+}
+@media (min-width: 769px) {
+  :root {
+    --vh: calc(100vh / 100);
   }
 }

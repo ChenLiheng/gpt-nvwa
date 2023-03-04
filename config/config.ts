@@ -61,5 +61,7 @@ export default defineConfig({
       },
     },
   },
-  define: {},
+  define: {
+    OPENAI_API_KEY: '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',
+  },
 });

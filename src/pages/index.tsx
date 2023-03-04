@@ -8,6 +8,8 @@ import iconSend from '@/assets/icons/icon-send.svg';
 import { useModel } from '@@/exports';
 
 export default function HomePage() {
+  const isOpenApi = false;
+
   const { msgList, setMsgList } = useModel('chat');
   const [humanMsg, setHumanMsg] = useState('');
 
@@ -17,9 +19,13 @@ export default function HomePage() {
     data,
     run: query,
     loading,
-  } = useRequest((data: any) => queryAnswerByOpenApi({ data }), {
-    manual: true,
-  });
+  } = useRequest(
+    (data: any) =>
+      isOpenApi ? queryAnswerByOpenApi({ data }) : queryAnswer(data),
+    {
+      manual: true,
+    },
+  );
 
   const handleInput = (e: any) => {
     setHumanMsg(e.target.value);
@@ -33,9 +39,9 @@ export default function HomePage() {
 
   const aiMsg = (content: string) => {
     let fmtContent = content;
-    /* if (content.startsWith('\n\n')) {
+    if (content.startsWith('\n\n')) {
       fmtContent = content.substring(2, content.length);
-    }*/
+    }
     return {
       role: 'ai',
       content: fmtContent,
@@ -46,7 +52,12 @@ export default function HomePage() {
     if (humanMsg?.length > 0) {
       setHumanMsg('');
       setMsgList((prev) => [...prev, userMsg(humanMsg)]);
-      query([...msgList, userMsg(humanMsg)]);
+      if (isOpenApi) {
+        query([...msgList, userMsg(humanMsg)]);
+      } else {
+        // 黄反接口请求
+        query(humanMsg);
+      }
     }
   };
 
@@ -54,14 +65,19 @@ export default function HomePage() {
     let code = e.charCode || e.keyCode;
     if (code === 13) {
       e.stopPropagation();
+      e.preventDefault();
       send();
     }
   };
 
   useEffect(() => {
     if (data) {
-      const msgs = data?.choices?.map((item: any) => item.message);
-      setMsgList([...msgList, ...(msgs || [])]);
+      if (isOpenApi) {
+        const msgs = data?.choices?.map((item: any) => item.message);
+        setMsgList([...msgList, ...(msgs || [])]);
+      } else {
+        setMsgList([...msgList, aiMsg(data)]);
+      }
     }
   }, [data]);
 

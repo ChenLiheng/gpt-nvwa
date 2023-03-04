@@ -25,7 +25,7 @@ interface MessageListProps {
 const MessageItem = ({ data, loading }: any) => (
   <div
     className={styles.msgItem}
-    style={{ background: data?.role === 'ai' ? '#f7f7f7' : '#fff' }}
+    style={{ background: data?.role === 'user' ? '#fff' : '#f7f7f7' }}
   >
     <div className={styles.msgBody}>
       <img
@@ -34,33 +34,30 @@ const MessageItem = ({ data, loading }: any) => (
         alt={''}
       />
       <div className={styles.content}>
-        {!loading ? (
-          <MarkDown
-            className="markdown-body bg-transparent"
-            components={{
-              code({ node, inline, className, children, ...props }) {
-                const match = /language-(\w+)/.exec(className || '');
-                return !inline && match ? (
-                  <SyntaxHighlighter
-                    children={String(children).replace(/\n$/, '')}
-                    style={atomDark}
-                    language={match[1]}
-                    PreTag="div"
-                    {...props}
-                  />
-                ) : (
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
-                );
-              },
-            }}
-          >
-            {data?.content}
-          </MarkDown>
-        ) : (
-          <div className={styles.cursor}></div>
-        )}
+        <MarkDown
+          className="markdown-body bg-transparent"
+          components={{
+            code({ node, inline, className, children, ...props }) {
+              const match = /language-(\w+)/.exec(className || '');
+              return !inline && match ? (
+                <SyntaxHighlighter
+                  children={String(children).replace(/\n$/, '')}
+                  style={atomDark}
+                  language={match[1]}
+                  PreTag="div"
+                  {...props}
+                />
+              ) : (
+                <code className={className} {...props}>
+                  {children}
+                </code>
+              );
+            },
+          }}
+        >
+          {data?.content}
+        </MarkDown>
+        {loading && <div className={styles.cursor}></div>}
       </div>
     </div>
   </div>
