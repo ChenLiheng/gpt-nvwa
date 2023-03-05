@@ -58,12 +58,15 @@ export default function HomePage() {
           }
           chunks.push(value);
           const char = decoder.decode(new Uint8Array(value));
-          // push to currentAssistantMessage
-          if (char === '\n' && currentAssistantMessage.endsWith('\n')) {
-            reader.read().then(processChunk);
-          }
+          console.log(char);
+
           if (char) {
-            setCurrentAssistantMessage((prev) => prev + char);
+            setCurrentAssistantMessage((prev) => {
+              if (char === '\n' && currentAssistantMessage.endsWith('\n')) {
+                return prev;
+              }
+              return prev + char;
+            });
           }
           window.scrollTo({
             top: document.body.scrollHeight,
@@ -121,7 +124,6 @@ export default function HomePage() {
   };
 
   // Human:写一首赞美祖国的诗
-
   return (
     <div className={styles.home}>
       {width > 769 && <SideBar />}
