@@ -9,6 +9,11 @@
 .main {
   flex: 1;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+
 
   .footer {
     padding: 1rem;
@@ -75,9 +80,24 @@
       }
     }
   }
+
+  .tip {
+    text-align: center;
+    padding-top: .75rem;
+    font-size: .75rem;
+    padding-bottom: 1.5rem;
+    color: rgba(0,0,0,0.5);
+  }
 }
 
 @media (max-width: 769px) {
+  .main {
+    width: 100%;
+
+    .guideContainer {
+      width: 100%;
+    }
+  }
   :root {
     --vh: 1vh;
   }

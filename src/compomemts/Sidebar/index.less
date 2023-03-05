@@ -3,6 +3,13 @@
   height: 100%;
   background-color: #1b2d47;
   padding: .5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .menu {
+    //flex: 1;
+  }
 
   .btnNew {
     width: 100%;
@@ -13,7 +20,8 @@
     border: 1px solid rgba(255,255,255,.2);
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
 
     .iconPlus {
@@ -24,12 +32,27 @@
   }
 
   .extra {
-    display: none;
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    //display: none;
+    .extraItem {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 1rem 0;
+      color: #fff;
+      border-top: 1px solid rgba(255,255,255,.2);
+    }
   }
 }
 
 .hidden {
-  display: block;
+  display: flex;
 }
 
 @media (max-width: 768px) {

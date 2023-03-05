@@ -4,12 +4,11 @@ import MessageList from '@/compomemts/MessageList';
 import { useEffect, useRef, useState } from 'react';
 import iconSend from '@/assets/icons/icon-send.svg';
 import { useModel } from '@@/exports';
+import GuideList from '@/compomemts/GuideList';
 
 export default function HomePage() {
-  const isOpenApi = false;
-
   const { msgList, setMsgList, loading, setLoading } = useModel('chat');
-  const [humanMsg, setHumanMsg] = useState('写一首赞美祖国的诗');
+  const [humanMsg, setHumanMsg] = useState('');
   const [currentAssistantMessage, setCurrentAssistantMessage] = useState('');
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -124,23 +123,32 @@ export default function HomePage() {
     <div className={styles.home}>
       <SideBar />
       <main className={styles.main}>
+        {!msgList ||
+          (msgList?.length === 0 && (
+            <GuideList onChange={(val) => setHumanMsg(val)} />
+          ))}
         <MessageList
           data={msgList}
           loading={loading}
           currentAssistantMessage={currentAssistantMessage}
         />
-
         <div className={styles.footer}>
           <div className={styles.sendInput}>
             <textarea
               ref={textAreaRef}
               value={humanMsg}
+              placeholder="发送消息给AI"
               onKeyDownCapture={handleKeyDown}
               onInput={(e) => handleInput(e)}
             />
             <div className={styles.iconWrap} onClick={send}>
               <img className={styles.iconSend} src={iconSend} alt="发送" />
             </div>
+          </div>
+
+          <div className={styles.tip}>
+            基于OpenAI
+            最新接口（gpt-3.5-turbo）,不收集任何个人隐私数据，免费使用
           </div>
         </div>
       </main>

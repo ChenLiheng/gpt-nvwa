@@ -1,0 +1,75 @@
+/**
+ * @author: big.bro
+ * @date:  2023-03-05
+ * @time: 17:44
+ * @contact: chenliheng@youlai.cn
+ * @description: #
+ */
+.guideContainer {
+  max-width: 42rem;
+  display: flex;
+  flex-direction: column;
+
+  .icon {
+    width: 24px;
+    height: 24px;
+    text-align: center;
+  }
+
+  .title {
+    margin-top: 20vh;
+    margin-bottom: 4rem;
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .tip {
+    text-align: center;
+    font-size: 1rem;
+    padding-top: .75rem;
+    padding-bottom: 1.5rem;
+    color: rgba(0,0,0,0.5);
+  }
+}
+
+.guideList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 0.875rem;
+
+  .guideItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .75rem;
+
+    .guideTitle {
+      text-align: center;
+      font-size: 1.125rem;
+      line-height: 1.75rem;
+    }
+
+    .guide {
+      background-color: rgba(247,247,248,1);
+      padding: 0.75rem;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      color: rgb(31,41,55);
+      font-size: .75rem;
+      text-align: center;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+  }
+}
+
+@media (max-width: 769px) {
+    .guideContainer {
+      width: 100%;
+    }
+}
