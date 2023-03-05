@@ -9,7 +9,7 @@ export default defineConfig({
   base: '/',
   favicons: ['/favicon.ico'],
   outputPath: 'dist',
-  title: 'gptDemo',
+  title: 'want.chat',
   metas: [
     {
       name: 'keywords',

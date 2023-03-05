@@ -5,9 +5,12 @@ import { useEffect, useRef, useState } from 'react';
 import iconSend from '@/assets/icons/icon-send.svg';
 import { useModel } from '@@/exports';
 import GuideList from '@/compomemts/GuideList';
+import useViewport from '@/hooks/useViewport';
+import Header from '@/compomemts/Header';
 
 export default function HomePage() {
   const { msgList, setMsgList, loading, setLoading } = useModel('chat');
+  const { width } = useViewport();
   const [humanMsg, setHumanMsg] = useState('你可以帮我做点什么？');
   const [currentAssistantMessage, setCurrentAssistantMessage] = useState('');
 
@@ -121,8 +124,9 @@ export default function HomePage() {
 
   return (
     <div className={styles.home}>
-      <SideBar />
+      {width > 769 && <SideBar />}
       <main className={styles.main}>
+        {width <= 769 && <Header />}
         {!msgList ||
           (msgList?.length === 0 && (
             <GuideList onChange={(val) => setHumanMsg(val)} />

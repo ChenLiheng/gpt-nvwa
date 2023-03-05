@@ -12,6 +12,7 @@
   "dependencies": {
     "@umijs/plugins": "^4.0.53",
     "ahooks": "^3.7.5",
+    "antd-mobile": "^5.28.1",
     "easy-typer-js": "^2.1.0",
     "github-markdown-css": "^5.2.0",
     "highlight.js": "^11.7.0",
