@@ -8,7 +8,7 @@ import GuideList from '@/compomemts/GuideList';
 
 export default function HomePage() {
   const { msgList, setMsgList, loading, setLoading } = useModel('chat');
-  const [humanMsg, setHumanMsg] = useState('');
+  const [humanMsg, setHumanMsg] = useState('你可以帮我做点什么？');
   const [currentAssistantMessage, setCurrentAssistantMessage] = useState('');
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
