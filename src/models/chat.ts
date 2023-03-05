@@ -13,11 +13,16 @@ export default () => {
   );
 
   const [loading, setLoading] = useState(false);
+  const [chatList, setChatList] = useState<
+    { id: string; list: { role: string; content: string }[] }[]
+  >([]);
 
   return {
     msgList,
     setMsgList,
     loading,
     setLoading,
+    chatList,
+    setChatList,
   };
 };

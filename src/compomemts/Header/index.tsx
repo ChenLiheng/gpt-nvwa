@@ -12,10 +12,17 @@ import { useState } from 'react';
 import { Popup } from 'antd-mobile';
 import SideBar from '../Sidebar';
 import { useModel } from '@@/exports';
+import { uuid } from '@/utils';
 
 const Header = () => {
-  const { setMsgList } = useModel('chat');
+  const { chatList, msgList, setMsgList, setChatList } = useModel('chat');
   const [visible, setVisible] = useState(false);
+
+  const newChat = () => {
+    setChatList([...chatList, { id: uuid(), list: msgList }]);
+    setMsgList([]);
+  };
+
   return (
     <div className="header">
       <img src={iconMenu} alt="菜单" onClick={() => setVisible(true)} />
