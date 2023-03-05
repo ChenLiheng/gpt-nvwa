@@ -1,3 +1,4 @@
+import { parseOpenAIStream } from '@/utils/openAI';
 import request from 'umi-request';
 
 export async function queryAnswer(data: Record<string, any>) {
@@ -8,18 +9,19 @@ export async function queryAnswer(data: Record<string, any>) {
 }
 
 export async function queryAnswerByOpenApi(data: any) {
-  const apikey = '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';
-  return request('https://api.openai.com/v1/chat/completions', {
+  const apikey = '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';
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apikey}`,
     },
     method: 'POST',
-    data: JSON.stringify({
+    body: JSON.stringify({
       model: 'gpt-3.5-turbo',
-      messages: data?.data,
+      messages: data,
       temperature: 0.6,
-      // stream: true,
+      stream: true,
     }),
   });
+  return new Response(parseOpenAIStream(response));
 }

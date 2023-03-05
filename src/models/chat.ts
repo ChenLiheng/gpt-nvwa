@@ -12,8 +12,12 @@ export default () => {
     [],
   );
 
+  const [loading, setLoading] = useState(false);
+
   return {
     msgList,
     setMsgList,
+    loading,
+    setLoading,
   };
 };

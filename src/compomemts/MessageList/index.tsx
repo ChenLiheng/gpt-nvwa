@@ -20,6 +20,7 @@ import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 interface MessageListProps {
   data?: { role: string; content: string }[];
   loading?: boolean;
+  currentAssistantMessage?: string;
 }
 
 const MessageItem = ({ data, loading }: any) => (
@@ -63,9 +64,15 @@ const MessageItem = ({ data, loading }: any) => (
   </div>
 );
 
-const Loading = () => <MessageItem data={{ role: 'ai' }} loading />;
+const Loading = ({ content }: { content?: string }) => (
+  <MessageItem data={{ role: 'ai', content }} loading />
+);
 
-const MessageList: FC<MessageListProps> = ({ data, loading = false }) => {
+const MessageList: FC<MessageListProps> = ({
+  data,
+  loading = false,
+  currentAssistantMessage,
+}) => {
   const listContainerRef = useRef<HTMLDivElement>(null);
 
   const handleScrollBottom = () => {
@@ -87,7 +94,7 @@ const MessageList: FC<MessageListProps> = ({ data, loading = false }) => {
       {data?.map((item, index) => (
         <MessageItem key={`${item.role}_${index}`} data={item} />
       ))}
-      {loading && <Loading />}
+      {loading && <Loading content={currentAssistantMessage} />}
     </div>
   );
 };

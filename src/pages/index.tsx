@@ -1,8 +1,6 @@
 import SideBar from '@/compomemts/Sidebar';
 import styles from './index.less';
 import MessageList from '@/compomemts/MessageList';
-import { useRequest } from 'ahooks';
-import { queryAnswer, queryAnswerByOpenApi } from '@/services';
 import { useEffect, useRef, useState } from 'react';
 import iconSend from '@/assets/icons/icon-send.svg';
 import { useModel } from '@@/exports';
@@ -10,22 +8,77 @@ import { useModel } from '@@/exports';
 export default function HomePage() {
   const isOpenApi = false;
 
-  const { msgList, setMsgList } = useModel('chat');
-  const [humanMsg, setHumanMsg] = useState('');
+  const { msgList, setMsgList, loading, setLoading } = useModel('chat');
+  const [humanMsg, setHumanMsg] = useState('写一首赞美祖国的诗');
+  const [currentAssistantMessage, setCurrentAssistantMessage] = useState('');
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  const {
-    data,
-    run: query,
-    loading,
-  } = useRequest(
-    (data: any) =>
-      isOpenApi ? queryAnswerByOpenApi({ data }) : queryAnswer({ data }),
-    {
-      manual: true,
-    },
-  );
+  const requestAiMessage = (data: any) => {
+    setLoading(true);
+    const decoder = new TextDecoder('utf-8');
+    fetch('http://13.229.45.163:8100/v1/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ data }),
+    })
+      .then((response) => {
+        const reader = response?.body?.getReader();
+
+        return new ReadableStream({
+          start(controller) {
+            function push() {
+              reader?.read().then(({ done, value }) => {
+                if (done) {
+                  controller.close();
+                  return;
+                }
+
+                controller.enqueue(value);
+                push();
+              });
+            }
+
+            push();
+          },
+        });
+      })
+      .then((stream) => {
+        const reader = stream.getReader();
+        let chunks = [];
+
+        const processChunk = ({ done, value }: any) => {
+          if (done) {
+            setLoading(false);
+            return;
+          }
+          chunks.push(value);
+          const char = decoder.decode(new Uint8Array(value));
+          // push to currentAssistantMessage
+          if (char === '\n' && currentAssistantMessage.endsWith('\n')) {
+            reader.read().then(processChunk);
+          }
+          if (char) {
+            setCurrentAssistantMessage((prev) => prev + char);
+          }
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+          });
+          reader.read().then(processChunk);
+        };
+        reader.read().then(processChunk);
+      });
+  };
+
+  useEffect(() => {
+    if (!loading && currentAssistantMessage) {
+      setMsgList((prev) => [...prev, aiMsg(currentAssistantMessage)]);
+      setCurrentAssistantMessage('');
+    }
+  }, [loading]);
 
   const handleInput = (e: any) => {
     setHumanMsg(e.target.value);
@@ -52,12 +105,7 @@ export default function HomePage() {
     if (humanMsg?.length > 0) {
       setHumanMsg('');
       setMsgList((prev) => [...prev, userMsg(humanMsg)]);
-      if (isOpenApi) {
-        query([...msgList, userMsg(humanMsg)]);
-      } else {
-        // 黄反接口请求
-        query(humanMsg);
-      }
+      requestAiMessage(humanMsg);
     }
   };
 
@@ -70,29 +118,21 @@ export default function HomePage() {
     }
   };
 
-  useEffect(() => {
-    if (data) {
-      if (isOpenApi) {
-        const msgs = data?.choices?.map((item: any) => item.message);
-        setMsgList([...msgList, ...(msgs || [])]);
-      } else {
-        setMsgList([...msgList, aiMsg(data?.data)]);
-      }
-    }
-  }, [data]);
-
   // Human:写一首赞美祖国的诗
 
   return (
     <div className={styles.home}>
       <SideBar />
       <main className={styles.main}>
-        <MessageList data={msgList} loading={loading} />
+        <MessageList
+          data={msgList}
+          loading={loading}
+          currentAssistantMessage={currentAssistantMessage}
+        />
 
         <div className={styles.footer}>
           <div className={styles.sendInput}>
             <textarea
-              // rows={1}
               ref={textAreaRef}
               value={humanMsg}
               onKeyDownCapture={handleKeyDown}

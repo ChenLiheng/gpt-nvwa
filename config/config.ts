@@ -29,7 +29,16 @@ export default defineConfig({
     },
   ],
   headScripts: [],
-  scripts: [],
+  scripts: [
+    '<script async src="https://www.googletagmanager.com/gtag/js?id=G-0TVDSDKTKP"></script>',
+    `<script>
+    window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-0TVDSDKTKP');
+</script>`,
+  ],
   routes,
   plugins: [
     '@umijs/plugins/dist/initial-state',
@@ -51,7 +60,7 @@ export default defineConfig({
     chrome: 60,
   },
   clientLoader: {},
-  proxy: proxy[APP_ENV || ''],
+  // proxy: proxy[APP_ENV || ''],
   hash: true,
   manifest: {
     background: '#f8f8f8',
