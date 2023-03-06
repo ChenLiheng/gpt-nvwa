@@ -21,11 +21,7 @@ const GuideList: FC<GuideListProps> = ({ onChange = () => {} }) => {
     {
       icon: iconGuide1,
       title: 'AI创作',
-      data: [
-        '写一篇简短的科幻小说',
-        '写一首赞美祖国的诗词',
-        '写一首节奏轻快的歌词',
-      ],
+      data: ['写一篇简短的科幻小说', '写一首赞美祖国的诗词', '写一首儿歌'],
     },
     {
       icon: iconGuide2,
@@ -41,7 +37,7 @@ const GuideList: FC<GuideListProps> = ({ onChange = () => {} }) => {
   return (
     <div className={styles.guideContainer}>
       <div className={styles.title}>免费使用ChatGPT</div>
-      <div className={styles.tip}>无需注册， 不收集个人隐私数据</div>
+      <div className={styles.tip}>无需注册，不收集个人隐私数据</div>
       <div className={styles.guideList}>
         {guideData.map((item) => (
           <div className={styles.guideItem} key={item?.title}>

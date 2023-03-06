@@ -7,15 +7,17 @@
  */
 import { useState } from 'react';
 
+type Message = { role: string; content: string };
+
+type Chat = { id: string; list: Message[] };
+
 export default () => {
-  const [msgList, setMsgList] = useState<{ role: string; content: string }[]>(
-    [],
-  );
+  const [msgList, setMsgList] = useState<Message[]>([]);
+
+  const [curChat, setCurChat] = useState<any>();
 
   const [loading, setLoading] = useState(false);
-  const [chatList, setChatList] = useState<
-    { id: string; list: { role: string; content: string }[] }[]
-  >([]);
+  const [chatList, setChatList] = useState<Chat[]>([]);
 
   return {
     msgList,
@@ -24,5 +26,7 @@ export default () => {
     setLoading,
     chatList,
     setChatList,
+    curChat,
+    setCurChat,
   };
 };

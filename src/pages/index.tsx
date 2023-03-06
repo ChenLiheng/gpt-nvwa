@@ -11,7 +11,7 @@ import Header from '@/compomemts/Header';
 export default function HomePage() {
   const { msgList, setMsgList, loading, setLoading } = useModel('chat');
   const { width } = useViewport();
-  const [humanMsg, setHumanMsg] = useState('你可以帮我做点什么？');
+  const [humanMsg, setHumanMsg] = useState('');
   const [currentAssistantMessage, setCurrentAssistantMessage] = useState('');
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -87,7 +87,6 @@ export default function HomePage() {
 
   const handleInput = (e: any) => {
     setHumanMsg(e.target.value);
-    console.log(e.target.value.split('\n').length);
   };
 
   const userMsg = (content: string) => ({
@@ -107,6 +106,9 @@ export default function HomePage() {
   };
 
   const send = () => {
+    if (loading) {
+      return;
+    }
     if (humanMsg?.length > 0) {
       setHumanMsg('');
       setMsgList((prev) => [...prev, userMsg(humanMsg)]);
@@ -146,9 +148,11 @@ export default function HomePage() {
               onKeyDownCapture={handleKeyDown}
               onInput={(e) => handleInput(e)}
             />
-            <div className={styles.iconWrap} onClick={send}>
-              <img className={styles.iconSend} src={iconSend} alt="发送" />
-            </div>
+            {!loading && (
+              <div className={styles.iconWrap} onClick={send}>
+                <img className={styles.iconSend} src={iconSend} alt="发送" />
+              </div>
+            )}
           </div>
 
           <div className={styles.tip}>基于OpenAI 最新接口（gpt-3.5-turbo）</div>

@@ -36,7 +36,7 @@ const MessageItem = ({ data, loading }: any) => (
       />
       <div className={styles.content}>
         <MarkDown
-          className="markdown-body bg-transparent"
+          className="markdown-body answer bg-transparent"
           components={{
             code({ node, inline, className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || '');

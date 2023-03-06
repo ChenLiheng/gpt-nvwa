@@ -2,15 +2,23 @@ import styles from './index.less';
 import icon from '@/assets/icons/icon-plus.svg';
 import iconChat from '@/assets/icons/icon-msg.svg';
 import iconDelete from '@/assets/icons/icon-delete.svg';
+import iconMail from '@/assets/icons/icon-mail.svg';
 import { useModel } from '@@/exports';
 import { uuid } from '@/utils';
 
 const SideBar = () => {
-  const { msgList, setMsgList, chatList, setChatList } = useModel('chat');
+  const { msgList, setMsgList, curChat, setCurChat, chatList, setChatList } =
+    useModel('chat');
+
+  const isExistNewChat = () => {
+    return chatList?.filter((item) => item?.list?.length === 0)?.length > 0;
+  };
 
   const newChat = () => {
-    setChatList([...chatList, { id: uuid(), list: msgList }]);
-    setMsgList([]);
+    if (!isExistNewChat()) {
+      setChatList([...chatList, { id: uuid(), list: msgList }]);
+      setMsgList([]);
+    }
   };
 
   const clearChat = () => {
@@ -20,6 +28,7 @@ const SideBar = () => {
 
   const changeChat = (id?: string) => {
     const chat = chatList?.find((i) => i.id === id);
+    setCurChat(chat);
     setMsgList(chat?.list || []);
   };
 
@@ -64,8 +73,14 @@ const SideBar = () => {
       <div className={styles.extra}>
         <ul>
           <li className={styles.extraItem} onClick={clearChat}>
-            {/*<img className={styles.iconPlus} src={icon} alt="add" />*/}
+            <img className={styles.iconPlus} src={iconDelete} alt="delete" />
             <span>清除所有会话</span>
+          </li>
+          <li className={styles.extraItem}>
+            <a href="mailto://contact@want.chat">
+              <img className={styles.iconPlus} src={iconMail} alt="delete" />
+              <span>联系我们</span>
+            </a>
           </li>
         </ul>
       </div>

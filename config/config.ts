@@ -9,15 +9,16 @@ export default defineConfig({
   base: '/',
   favicons: ['/favicon.ico'],
   outputPath: 'dist',
-  title: 'want.chat',
+  title: '免费ChatGPT应用-Want.Chat',
   metas: [
     {
       name: 'keywords',
-      content: 'nvwa.chat',
+      content: 'ChatGPT, Chat, AI, AI助理,个人助理,  聊天, 免费\n',
     },
     {
       name: 'description',
-      content: 'nvwa.chat',
+      content:
+        'Want.Chat是一款基于ChatGPT API 的免费AI助理应用，拥有强大的聊天功能，用户无需注册即可直接快速使用ChatGPT全部功能，帮助用户处理日常琐事，回答各种问题，提供相关信息和建议等。',
     },
     { name: 'Cache-Control', content: 'no-cache, no-store, must-revalidate' },
     { name: 'Expires', content: '0' },
