@@ -5,7 +5,6 @@
  * @contact: chenliheng@youlai.cn
  * @description: #
  */
-import styles from './index.less';
 import aiLogo from '@/assets/icons/ai-logo.svg';
 import userLogo from '@/assets/icons/user-logo.svg';
 import { FC, useEffect, useRef } from 'react';
@@ -16,6 +15,7 @@ import 'github-markdown-css';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'; // 代码高亮
 // @ts-ignore
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import styles from './index.less';
 
 interface MessageListProps {
   data?: { role: string; content: string }[];

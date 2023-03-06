@@ -123,7 +123,6 @@ export default function HomePage() {
     }
   };
 
-  // Human:写一首赞美祖国的诗
   return (
     <div className={styles.home}>
       {width > 769 && <SideBar />}
@@ -152,10 +151,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className={styles.tip}>
-            基于OpenAI
-            最新接口（gpt-3.5-turbo）,不收集任何个人隐私数据，免费使用
-          </div>
+          <div className={styles.tip}>基于OpenAI 最新接口（gpt-3.5-turbo）</div>
         </div>
       </main>
     </div>

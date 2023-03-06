@@ -30,14 +30,11 @@ export default defineConfig({
   ],
   headScripts: [],
   scripts: [
-    '<script async src="https://www.googletagmanager.com/gtag/js?id=G-0TVDSDKTKP"></script>',
-    `<script>
-    window.dataLayer = window.dataLayer || [];
+    'https://www.googletagmanager.com/gtag/js?id=G-0TVDSDKTKP',
+    `window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-
-gtag('config', 'G-0TVDSDKTKP');
-</script>`,
+gtag('config', 'G-0TVDSDKTKP');`,
   ],
   routes,
   plugins: [
