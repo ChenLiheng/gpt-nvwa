@@ -13,7 +13,7 @@ export default defineConfig({
   metas: [
     {
       name: 'keywords',
-      content: 'ChatGPT, Chat, AI, AI助理,个人助理,  聊天, 免费\n',
+      content: 'ChatGPT, Chat, AI, AI助理,个人助理,  聊天, 免费',
     },
     {
       name: 'description',
