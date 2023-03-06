@@ -9,7 +9,8 @@ import useViewport from '@/hooks/useViewport';
 import Header from '@/compomemts/Header';
 
 export default function HomePage() {
-  const { msgList, setMsgList, loading, setLoading } = useModel('chat');
+  const { msgList, setMsgList, loading, setLoading, controller } =
+    useModel('chat');
   const { width } = useViewport();
   const [humanMsg, setHumanMsg] = useState('');
   const [currentAssistantMessage, setCurrentAssistantMessage] = useState('');
@@ -19,63 +20,68 @@ export default function HomePage() {
   const requestAiMessage = (data: any) => {
     setLoading(true);
     const decoder = new TextDecoder('utf-8');
-    fetch('http://13.229.45.163:8100/v1/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ data }),
-    })
-      .then((response) => {
-        const reader = response?.body?.getReader();
+    try {
+      fetch('http://13.229.45.163:8100/v1/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data }),
+        signal: controller?.current?.signal,
+      })
+        .then((response) => {
+          const reader = response?.body?.getReader();
 
-        return new ReadableStream({
-          start(controller) {
-            function push() {
-              reader?.read().then(({ done, value }) => {
-                if (done) {
-                  controller.close();
-                  return;
+          return new ReadableStream({
+            start(controller) {
+              function push() {
+                reader?.read().then(({ done, value }) => {
+                  if (done) {
+                    controller.close();
+                    return;
+                  }
+
+                  controller.enqueue(value);
+                  push();
+                });
+              }
+              push();
+            },
+          });
+        })
+        .then((stream) => {
+          const reader = stream.getReader();
+          let chunks = [];
+
+          const processChunk = ({ done, value }: any) => {
+            if (done) {
+              setLoading(false);
+              return;
+            }
+            chunks.push(value);
+            const char = decoder.decode(new Uint8Array(value));
+            console.log(JSON.stringify(char));
+
+            if (char) {
+              setCurrentAssistantMessage((prev) => {
+                if (char === '\n' && currentAssistantMessage.endsWith('\n')) {
+                  return prev;
                 }
-
-                controller.enqueue(value);
-                push();
+                return prev + char;
               });
             }
-
-            push();
-          },
-        });
-      })
-      .then((stream) => {
-        const reader = stream.getReader();
-        let chunks = [];
-
-        const processChunk = ({ done, value }: any) => {
-          if (done) {
-            setLoading(false);
-            return;
-          }
-          chunks.push(value);
-          const char = decoder.decode(new Uint8Array(value));
-          console.log(char);
-
-          if (char) {
-            setCurrentAssistantMessage((prev) => {
-              if (char === '\n' && currentAssistantMessage.endsWith('\n')) {
-                return prev;
-              }
-              return prev + char;
+            window.scrollTo({
+              top: document.body.scrollHeight,
+              behavior: 'smooth',
             });
-          }
-          window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth',
-          });
+            reader.read().then(processChunk);
+          };
           reader.read().then(processChunk);
-        };
-        reader.read().then(processChunk);
-      });
+        })
+        .catch((e) => {
+          setLoading(false);
+        });
+    } catch (e) {}
   };
 
   useEffect(() => {

@@ -5,7 +5,7 @@
  * @contact: chenliheng@youlai.cn
  * @description: #
  */
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 type Message = { role: string; content: string };
 
@@ -17,7 +17,10 @@ export default () => {
   const [curChat, setCurChat] = useState<any>();
 
   const [loading, setLoading] = useState(false);
+
   const [chatList, setChatList] = useState<Chat[]>([]);
+
+  const controller = useRef(new AbortController());
 
   return {
     msgList,
@@ -28,5 +31,6 @@ export default () => {
     setChatList,
     curChat,
     setCurChat,
+    controller,
   };
 };

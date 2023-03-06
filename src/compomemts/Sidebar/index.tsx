@@ -7,18 +7,34 @@ import { useModel } from '@@/exports';
 import { uuid } from '@/utils';
 
 const SideBar = () => {
-  const { msgList, setMsgList, curChat, setCurChat, chatList, setChatList } =
-    useModel('chat');
+  const {
+    msgList,
+    setMsgList,
+    curChat,
+    setCurChat,
+    chatList,
+    setChatList,
+    controller,
+    setLoading,
+  } = useModel('chat');
 
   const isExistNewChat = () => {
     return chatList?.filter((item) => item?.list?.length === 0)?.length > 0;
   };
 
   const newChat = () => {
-    if (!isExistNewChat()) {
-      setChatList([...chatList, { id: uuid(), list: msgList }]);
-      setMsgList([]);
+    if (isExistNewChat()) {
+      return;
     }
+
+    if (curChat) {
+      setChatList([...chatList, { id: uuid(), list: [] }]);
+    } else {
+      setChatList([...chatList, { id: uuid(), list: msgList }]);
+    }
+    controller?.current?.abort();
+    setLoading(false);
+    setTimeout(() => setMsgList([]), 100);
   };
 
   const clearChat = () => {
@@ -34,6 +50,10 @@ const SideBar = () => {
 
   const deleteChat = (id: string) => {
     const list = chatList?.filter((i) => i.id !== id);
+    if (id === curChat?.id) {
+      setCurChat(null);
+      setMsgList([]);
+    }
     setChatList([...(list || [])]);
   };
 
@@ -54,14 +74,16 @@ const SideBar = () => {
         </button>
         {chatList?.map((item) => (
           <button
-            className={`${styles.btn} ${styles.noBorder}`}
+            className={`${styles.btn} ${styles.noBorder} ${
+              item?.id === curChat?.id ? styles.activeBtn : ''
+            }`}
             key={item?.id}
             onClick={() => changeChat(item?.id)}
           >
             <img className={styles.iconPlus} src={iconChat} alt="add" />
             <span>{getChatTitle(item?.id)}</span>
             <img
-              className={styles.iconPlus}
+              className={styles.iconDel}
               src={iconDelete}
               alt="add"
               onClick={() => deleteChat(item?.id)}

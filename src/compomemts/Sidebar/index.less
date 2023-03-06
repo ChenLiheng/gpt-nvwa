@@ -24,6 +24,8 @@
     align-items: center;
     justify-content: flex-start;
     cursor: pointer;
+    margin-bottom: 5px;
+
 
     .iconPlus {
       font-size: 1rem;
@@ -31,9 +33,24 @@
       margin-right: .75rem;
     }
 
+    .iconDel  {
+      font-size: 1rem;
+      color: #fff;
+      margin-right: .75rem;
+      display: none;
+    }
+
     span {
       flex: 1;
       text-align: left;
+    }
+  }
+
+  .activeBtn {
+    background-color: rgb(30 41 59 / 1);
+
+    .iconDel {
+      display: block;
     }
   }
 
