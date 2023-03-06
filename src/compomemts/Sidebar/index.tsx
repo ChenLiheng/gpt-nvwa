@@ -79,7 +79,7 @@ const SideBar = () => {
           <li className={styles.extraItem}>
             <a href="mailto://contact@want.chat">
               <img className={styles.iconPlus} src={iconMail} alt="delete" />
-              <span>联系我们</span>
+              <span>contact@want.chat</span>
             </a>
           </li>
         </ul>
