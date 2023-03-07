@@ -7,19 +7,20 @@
  */
 import aiLogo from '@/assets/icons/ai-logo.svg';
 import userLogo from '@/assets/icons/user-logo.svg';
-import { FC, useEffect, useRef } from 'react';
+import { FC, Fragment, useEffect, useRef } from 'react';
 import MarkDown from 'react-markdown';
 import 'github-markdown-css';
 // @ts-ignore
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'; // 代码高亮
 // @ts-ignore
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
 
 import styles from './index.less';
+import CodeCopyBtn from '@/compomemts/CodeCopyButton';
 
 interface MessageListProps {
   data?: { role: string; content: string }[];
@@ -47,13 +48,16 @@ const MessageItem = ({ data, loading }: any) => (
             code({ node, inline, className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || '');
               return !inline && match ? (
-                <SyntaxHighlighter
-                  children={String(children).replace(/\n$/, '')}
-                  style={atomDark}
-                  language={match[1]}
-                  PreTag="div"
-                  {...props}
-                />
+                <>
+                  {/*<CodeCopyBtn value={String(children)} />*/}
+                  <SyntaxHighlighter
+                    children={String(children).replace(/\n$/, '')}
+                    style={oneDark}
+                    language={match[1]}
+                    PreTag="div"
+                    {...props}
+                  />
+                </>
               ) : (
                 <code className={className} {...props}>
                   {children}
@@ -64,14 +68,14 @@ const MessageItem = ({ data, loading }: any) => (
         >
           {data?.content}
         </MarkDown>
-        {loading && <div className={styles.cursor}></div>}
+        {loading && <span className={styles.cursor}></span>}
       </div>
     </div>
   </div>
 );
 
 const Loading = ({ content }: { content?: string }) => (
-  <MessageItem data={{ role: 'ai', content }} loading />
+  <MessageItem data={{ role: 'assistant', content }} loading />
 );
 
 const MessageList: FC<MessageListProps> = ({

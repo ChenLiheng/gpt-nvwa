@@ -16,6 +16,7 @@
     "easy-typer-js": "^2.1.0",
     "github-markdown-css": "^5.2.0",
     "highlight.js": "^11.7.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-markdown": "^8.0.5",
     "react-syntax-highlighter": "^15.5.0",
     "rehype-katex": "^6.0.2",

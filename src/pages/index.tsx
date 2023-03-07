@@ -26,7 +26,7 @@ export default function HomePage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ data }),
+        body: JSON.stringify({ messages: data }),
         signal: controller?.current?.signal,
       })
         .then((response) => {
@@ -59,7 +59,9 @@ export default function HomePage() {
               return;
             }
             chunks.push(value);
-            const char = decoder.decode(new Uint8Array(value));
+            const char = decoder
+              .decode(new Uint8Array(value))
+              ?.replace(/\n\n/g, '\n');
             console.log(JSON.stringify(char));
 
             if (char) {
@@ -106,7 +108,7 @@ export default function HomePage() {
       fmtContent = content.substring(2, content.length);
     }
     return {
-      role: 'ai',
+      role: 'assistant',
       content: fmtContent,
     };
   };
@@ -118,7 +120,7 @@ export default function HomePage() {
     if (humanMsg?.length > 0) {
       setHumanMsg('');
       setMsgList((prev) => [...prev, userMsg(humanMsg)]);
-      requestAiMessage(humanMsg);
+      requestAiMessage([...msgList, userMsg(humanMsg)]);
     }
   };
 
