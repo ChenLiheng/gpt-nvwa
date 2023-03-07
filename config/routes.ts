@@ -1,1 +1,11 @@
-export default [{ path: '/', component: 'index' }];
+export default [
+  { path: '/', redirect: '/chat' },
+  {
+    path: '/chat',
+    component: 'index',
+  },
+  {
+    path: '/chat/:id',
+    component: 'index',
+  },
+];

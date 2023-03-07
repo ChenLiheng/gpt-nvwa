@@ -1,12 +1,13 @@
 import SideBar from '@/compomemts/Sidebar';
 import styles from './index.less';
 import MessageList from '@/compomemts/MessageList';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import iconSend from '@/assets/icons/icon-send.svg';
 import { useModel } from '@@/exports';
 import GuideList from '@/compomemts/GuideList';
 import useViewport from '@/hooks/useViewport';
 import Header from '@/compomemts/Header';
+import { useMount } from 'ahooks';
 
 export default function HomePage() {
   const { msgList, setMsgList, loading, setLoading, controller } =
@@ -51,14 +52,15 @@ export default function HomePage() {
         })
         .then((stream) => {
           const reader = stream.getReader();
-          let chunks = [];
+          let chunks: string[] = [];
 
           const processChunk = ({ done, value }: any) => {
             if (done) {
               setLoading(false);
+              setMsgList((prev) => [...prev, aiMsg(chunks?.join(''))]);
+              setCurrentAssistantMessage('');
               return;
             }
-            chunks.push(value);
             const char = decoder
               .decode(new Uint8Array(value))
               ?.replace(/\n\n/g, '\n');
@@ -69,6 +71,7 @@ export default function HomePage() {
                 if (char === '\n' && currentAssistantMessage.endsWith('\n')) {
                   return prev;
                 }
+                chunks.push(char);
                 return prev + char;
               });
             }
@@ -79,19 +82,21 @@ export default function HomePage() {
             reader.read().then(processChunk);
           };
           reader.read().then(processChunk);
-        })
-        .catch((e) => {
-          setLoading(false);
         });
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  useEffect(() => {
-    if (!loading && currentAssistantMessage) {
-      setMsgList((prev) => [...prev, aiMsg(currentAssistantMessage)]);
-      setCurrentAssistantMessage('');
-    }
-  }, [loading]);
+  useMount(() => {
+    controller?.current?.signal?.addEventListener('abort', abortHandle);
+  });
+
+  const abortHandle = useCallback(() => {
+    setMsgList((prev) => [...prev, aiMsg(currentAssistantMessage)]);
+    setCurrentAssistantMessage('');
+    setLoading(false);
+  }, [currentAssistantMessage]);
 
   const handleInput = (e: any) => {
     setHumanMsg(e.target.value);
@@ -159,9 +164,15 @@ export default function HomePage() {
               onKeyDownCapture={handleKeyDown}
               onInput={(e) => handleInput(e)}
             />
-            {!loading && (
+            {!loading ? (
               <div className={styles.iconWrap} onClick={send}>
                 <img className={styles.iconSend} src={iconSend} alt="发送" />
+              </div>
+            ) : (
+              <div className={styles.loading}>
+                <span></span>
+                <span></span>
+                <span></span>
               </div>
             )}
           </div>

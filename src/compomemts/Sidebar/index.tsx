@@ -3,7 +3,7 @@ import icon from '@/assets/icons/icon-plus.svg';
 import iconChat from '@/assets/icons/icon-msg.svg';
 import iconDelete from '@/assets/icons/icon-delete.svg';
 import iconMail from '@/assets/icons/icon-mail.svg';
-import { useModel } from '@@/exports';
+import { useModel, useNavigate } from '@@/exports';
 import { uuid } from '@/utils';
 
 const SideBar = () => {
@@ -18,23 +18,27 @@ const SideBar = () => {
     setLoading,
   } = useModel('chat');
 
+  const navigate = useNavigate();
+
   const isExistNewChat = () => {
     return chatList?.filter((item) => item?.list?.length === 0)?.length > 0;
   };
 
   const newChat = () => {
+    controller?.current?.abort();
+
     if (isExistNewChat()) {
       return;
     }
 
-    if (curChat) {
-      setChatList([...chatList, { id: uuid(), list: [] }]);
-    } else {
-      setChatList([...chatList, { id: uuid(), list: msgList }]);
-    }
-    controller?.current?.abort();
-    setLoading(false);
-    setTimeout(() => setMsgList([]), 100);
+    setTimeout(() => {
+      if (curChat) {
+        setChatList([...chatList, { id: uuid(), list: [] }]);
+      } else {
+        setChatList([...chatList, { id: uuid(), list: msgList }]);
+      }
+      setMsgList([]);
+    }, 100);
   };
 
   const clearChat = () => {
@@ -46,6 +50,7 @@ const SideBar = () => {
     const chat = chatList?.find((i) => i.id === id);
     setCurChat(chat);
     setMsgList(chat?.list || []);
+    navigate(`/chat/${id}`, { replace: true });
   };
 
   const deleteChat = (id: string) => {
