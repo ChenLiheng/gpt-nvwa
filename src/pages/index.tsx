@@ -131,15 +131,18 @@ export default function HomePage() {
     }
   };
 
+  const selPrompt = (val: string) => {
+    setHumanMsg(val);
+    textAreaRef?.current?.focus();
+  };
+
   return (
     <div className={styles.home}>
       {width > 769 && <SideBar />}
       <main className={styles.main}>
         {width <= 769 && <Header />}
         {!msgList ||
-          (msgList?.length === 0 && (
-            <GuideList onChange={(val) => setHumanMsg(val)} />
-          ))}
+          (msgList?.length === 0 && <GuideList onChange={selPrompt} />)}
         <MessageList
           data={msgList}
           loading={loading}
