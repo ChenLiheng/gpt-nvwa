@@ -177,7 +177,7 @@ export default function HomePage() {
             )}
           </div>
 
-          <div className={styles.tip}>基于OpenAI 最新接口（gpt-3.5-turbo）</div>
+          <div className={styles.tip}>基于OpenAI 最新模型（gpt-3.5-turbo）</div>
         </div>
       </main>
     </div>

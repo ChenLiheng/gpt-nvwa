@@ -26,7 +26,7 @@ const Header = () => {
   return (
     <div className="header">
       <img src={iconMenu} alt="菜单" onClick={() => setVisible(true)} />
-      <span>want.chat</span>
+      <span>Want.Chat</span>
       <img src={iconPlus} alt="新建" onClick={() => setMsgList([])} />
       <Popup
         visible={visible}
