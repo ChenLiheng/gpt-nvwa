@@ -58,7 +58,7 @@ gtag('config', 'G-0TVDSDKTKP');`,
     chrome: 60,
   },
   clientLoader: {},
-  // proxy: proxy[APP_ENV || ''],
+  proxy: proxy[APP_ENV || ''],
   hash: true,
   manifest: {
     background: '#f8f8f8',
