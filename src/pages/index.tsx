@@ -22,7 +22,7 @@ export default function HomePage() {
     setLoading(true);
     const decoder = new TextDecoder('utf-8');
     try {
-      fetch('http://43.198.72.177:8100/v1/chat', {
+      fetch('https://43.198.72.177:8100/v1/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
