@@ -32,9 +32,17 @@ const CodeCopyBtn: FC<CodeCopyBtnProps> = ({ value }) => {
       <div className="code-copy-btn">
         <button>
           {copied ? (
-            <img src={iconSuccess} alt={'copied'} />
+            <img
+              src={iconSuccess}
+              style={{ backgroundColor: 'transparent' }}
+              alt={'copied'}
+            />
           ) : (
-            <img src={iconCopy} alt="Copy" />
+            <img
+              src={iconCopy}
+              style={{ backgroundColor: 'transparent' }}
+              alt="Copy"
+            />
           )}
         </button>
       </div>

@@ -29,7 +29,7 @@ const defMsgs = [
 ];
 
 export default () => {
-  const [msgList, setMsgList] = useState<Message[]>([]);
+  const [msgList, setMsgList] = useState<Message[]>(defMsgs);
 
   const [curChat, setCurChat] = useState<any>();
 

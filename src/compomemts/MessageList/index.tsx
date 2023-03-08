@@ -49,7 +49,7 @@ const MessageItem = ({ data, loading }: any) => (
               const match = /language-(\w+)/.exec(className || '');
               return !inline && match ? (
                 <>
-                  {/*<CodeCopyBtn value={String(children)} />*/}
+                  <CodeCopyBtn value={String(children)} />
                   <SyntaxHighlighter
                     children={String(children).replace(/\n$/, '')}
                     style={oneDark}
