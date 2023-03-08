@@ -9,6 +9,9 @@
 import React, { FC } from 'react';
 // @ts-ignore
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import iconSuccess from '@/assets/icons/icon-success.svg';
+import iconCopy from '@/assets/icons/icon-copy.svg';
+import './index.less';
 
 interface CodeCopyBtnProps {
   value: string;
@@ -27,7 +30,13 @@ const CodeCopyBtn: FC<CodeCopyBtnProps> = ({ value }) => {
   return (
     <CopyToClipboard text={value} onCopy={handleCopy}>
       <div className="code-copy-btn">
-        <button>{copied ? 'Copied!' : 'Copy'}</button>
+        <button>
+          {copied ? (
+            <img src={iconSuccess} alt={'copied'} />
+          ) : (
+            <img src={iconCopy} alt="Copy" />
+          )}
+        </button>
       </div>
     </CopyToClipboard>
   );

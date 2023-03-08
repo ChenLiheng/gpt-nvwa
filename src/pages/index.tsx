@@ -125,7 +125,8 @@ export default function HomePage() {
     if (humanMsg?.length > 0) {
       setHumanMsg('');
       setMsgList((prev) => [...prev, userMsg(humanMsg)]);
-      requestAiMessage([...msgList, userMsg(humanMsg)]);
+      const history = [...(msgList?.slice(-5) || []), userMsg(humanMsg)];
+      requestAiMessage(history);
     }
   };
 
