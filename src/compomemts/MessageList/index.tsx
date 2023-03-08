@@ -66,9 +66,10 @@ const MessageItem = ({ data, loading }: any) => (
             },
           }}
         >
-          {data?.content}
+          {`${data?.content} ${
+            loading ? `<span class="output-cursor"></span>` : ''
+          }`}
         </MarkDown>
-        {loading && <span className={styles.cursor}></span>}
       </div>
     </div>
   </div>
