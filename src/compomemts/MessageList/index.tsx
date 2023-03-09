@@ -21,6 +21,7 @@ import rehypeRaw from 'rehype-raw';
 
 import styles from './index.less';
 import CodeCopyBtn from '@/compomemts/CodeCopyButton';
+import { useDebounceFn } from 'ahooks';
 
 interface MessageListProps {
   data?: { role: string; content: string }[];
@@ -86,19 +87,22 @@ const MessageList: FC<MessageListProps> = ({
 }) => {
   const listContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleScrollBottom = () => {
-    if (listContainerRef?.current) {
-      const { scrollHeight, clientHeight } = listContainerRef?.current;
-      listContainerRef.current.scrollTo({
-        top: scrollHeight - clientHeight,
-        behavior: 'smooth',
-      });
-    }
-  };
+  const { run: handleScrollBottom } = useDebounceFn(
+    () => {
+      if (listContainerRef?.current) {
+        const { scrollHeight, clientHeight } = listContainerRef?.current;
+        listContainerRef.current.scrollTo({
+          top: scrollHeight - clientHeight,
+          behavior: 'smooth',
+        });
+      }
+    },
+    { wait: 50 },
+  );
 
   useEffect(() => {
     handleScrollBottom();
-  }, [data]);
+  }, [data, currentAssistantMessage]);
 
   return (
     <div className={styles.msgList} ref={listContainerRef}>
