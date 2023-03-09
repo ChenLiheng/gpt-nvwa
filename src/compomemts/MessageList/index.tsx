@@ -51,7 +51,6 @@ const MessageItem = ({ data, loading }: any) => (
               const fmtChildren = children?.map((item: any) =>
                 item?.replace('<span class="output-cursor"></span>', ''),
               );
-              console.log(fmtChildren);
               return !inline && match ? (
                 <>
                   <CodeCopyBtn value={String(fmtChildren)} />
