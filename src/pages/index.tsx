@@ -22,7 +22,7 @@ export default function HomePage() {
     setLoading(true);
     const decoder = new TextDecoder('utf-8');
     try {
-      fetch('/v1/chat', {
+      fetch('https://want.chat/v1/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

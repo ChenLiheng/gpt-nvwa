@@ -48,11 +48,15 @@ const MessageItem = ({ data, loading }: any) => (
           components={{
             code({ node, inline, className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || '');
+              const fmtChildren = children?.map((item: any) =>
+                item?.replace('<span class="output-cursor"></span>', ''),
+              );
+              console.log(fmtChildren);
               return !inline && match ? (
                 <>
-                  <CodeCopyBtn value={String(children)} />
+                  <CodeCopyBtn value={String(fmtChildren)} />
                   <SyntaxHighlighter
-                    children={String(children).replace(/\n$/, '')}
+                    children={String(fmtChildren).replace(/\n$/, '')}
                     style={oneDark}
                     language={match[1]}
                     PreTag="div"
@@ -61,7 +65,7 @@ const MessageItem = ({ data, loading }: any) => (
                 </>
               ) : (
                 <code className={className} {...props}>
-                  {children}
+                  {fmtChildren}
                 </code>
               );
             },
