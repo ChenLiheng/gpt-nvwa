@@ -13,3 +13,9 @@ export const uuid = (): string => {
   URL.revokeObjectURL(temp_url); //释放这个url
   return uuid.substring(uuid.lastIndexOf('/') + 1);
 };
+
+export const genNonceStr = (digit = 8) => {
+  const randomNumber = Math.random() * 100000000;
+  const randomInt = Math.floor(randomNumber);
+  return randomInt.toString().padStart(digit, '0');
+};

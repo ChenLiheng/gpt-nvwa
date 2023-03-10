@@ -10,12 +10,17 @@
     "start:test": "cross-env APP_ENV=test UMI_ENV=test umi dev"
   },
   "dependencies": {
+    "@types/crypto-js": "^4.1.1",
+    "@types/elliptic": "^6.4.14",
     "@umijs/plugins": "^4.0.53",
     "ahooks": "^3.7.5",
     "antd-mobile": "^5.28.1",
+    "binascii": "^0.0.2",
     "easy-typer-js": "^2.1.0",
+    "elliptic": "^6.5.4",
     "github-markdown-css": "^5.2.0",
     "highlight.js": "^11.7.0",
+    "js-sha256": "^0.9.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-markdown": "^8.0.5",
     "react-syntax-highlighter": "^15.5.0",

@@ -29,7 +29,7 @@ export default defineConfig({
         'width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,viewport-fit=cover',
     },
   ],
-  headScripts: [],
+  headScripts: ['http://static.geetest.com/v4/gt4.js'],
   scripts: [
     'https://www.googletagmanager.com/gtag/js?id=G-0TVDSDKTKP',
     `window.dataLayer = window.dataLayer || [];

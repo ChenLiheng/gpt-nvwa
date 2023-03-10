@@ -8,6 +8,7 @@ import GuideList from '@/compomemts/GuideList';
 import useViewport from '@/hooks/useViewport';
 import Header from '@/compomemts/Header';
 import { useMount } from 'ahooks';
+import { fetchPost } from '@/utils/fetchRequest';
 
 export default function HomePage() {
   const { msgList, setMsgList, loading, setLoading, controller } =
@@ -15,21 +16,22 @@ export default function HomePage() {
   const { width } = useViewport();
   const [humanMsg, setHumanMsg] = useState('');
   const [currentAssistantMessage, setCurrentAssistantMessage] = useState('');
+  const [showCaptcha, setShowCaptcha] = useState(false);
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const requestAiMessage = (data: any) => {
     setLoading(true);
+
     const decoder = new TextDecoder('utf-8');
     try {
-      fetch('/v1/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      fetchPost(
+        '/v1/chat',
+        { messages: data },
+        {
+          signal: controller?.current?.signal,
         },
-        body: JSON.stringify({ messages: data }),
-        signal: controller?.current?.signal,
-      })
+      )
         .then((response) => {
           const reader = response?.body?.getReader();
 
@@ -88,7 +90,28 @@ export default function HomePage() {
     }
   };
 
+  const initCapt = () => {
+    const captchaId = '647f5ed2ed8acb4be36784e01556bb71';
+    const product = 'bind';
+    (window as any).initGeetest4(
+      {
+        captchaId: captchaId,
+        product: product,
+      },
+      function (gt: any) {
+        (window as any).gt = gt;
+        gt.showCaptcha();
+        gt.appendTo('#captcha').onSuccess(function (e: any) {
+          const result = gt.getValidate();
+          console.log(result);
+          setShowCaptcha(false);
+        });
+      },
+    );
+  };
+
   useMount(() => {
+    // initCapt();
     controller?.current?.signal?.addEventListener('abort', abortHandle);
   });
 
@@ -181,6 +204,12 @@ export default function HomePage() {
           <div className={styles.tip}>基于OpenAI 最新模型（gpt-3.5-turbo）</div>
         </div>
       </main>
+
+      {showCaptcha && (
+        <div className={styles.captcha}>
+          <div id="captcha"></div>
+        </div>
+      )}
     </div>
   );
 }
