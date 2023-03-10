@@ -111,7 +111,7 @@ export default function HomePage() {
   };
 
   useMount(() => {
-    // initCapt();
+    initCapt();
     controller?.current?.signal?.addEventListener('abort', abortHandle);
   });
 
