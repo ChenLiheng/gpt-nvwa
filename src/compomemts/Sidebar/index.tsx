@@ -3,6 +3,7 @@ import icon from '@/assets/icons/icon-plus.svg';
 import iconChat from '@/assets/icons/icon-msg.svg';
 import iconDelete from '@/assets/icons/icon-delete.svg';
 import iconMail from '@/assets/icons/icon-mail.svg';
+import iconTelegram from '@/assets/icons/icon-telegram.svg';
 import { useModel, useNavigate } from '@@/exports';
 import { uuid } from '@/utils';
 
@@ -102,6 +103,16 @@ const SideBar = () => {
           <li className={styles.extraItem} onClick={clearChat}>
             <img className={styles.iconPlus} src={iconDelete} alt="delete" />
             <span>清除所有会话</span>
+          </li>
+          <li className={styles.extraItem}>
+            <a href="https://t.me/chatgptv12345" target="_blank">
+              <img
+                className={styles.iconPlus}
+                src={iconTelegram}
+                alt="delete"
+              />
+              <span>加入Telegram电报组</span>
+            </a>
           </li>
           <li className={styles.extraItem}>
             <a href="mailto://contact@want.chat">
