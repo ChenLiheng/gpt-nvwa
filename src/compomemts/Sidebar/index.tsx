@@ -4,6 +4,7 @@ import iconChat from '@/assets/icons/icon-msg.svg';
 import iconDelete from '@/assets/icons/icon-delete.svg';
 import iconMail from '@/assets/icons/icon-mail.svg';
 import iconTelegram from '@/assets/icons/icon-telegram.svg';
+import iconZza from '@/assets/icons/icon-zza.svg';
 import { useModel, useNavigate } from '@@/exports';
 import { uuid } from '@/utils';
 
@@ -103,6 +104,12 @@ const SideBar = () => {
           <li className={styles.extraItem} onClick={clearChat}>
             <img className={styles.iconPlus} src={iconDelete} alt="delete" />
             <span>清除所有会话</span>
+          </li>
+          <li className={styles.extraItem}>
+            <a href="https://www.zipzap.ai/" target="_blank">
+              <img className={styles.iconPlus} src={iconZza} alt="delete" />
+              <span>推荐ZipZap.AI</span>
+            </a>
           </li>
           <li className={styles.extraItem}>
             <a href="https://t.me/chatgptv12345" target="_blank">
